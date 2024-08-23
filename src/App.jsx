@@ -1,13 +1,16 @@
-import QRCode from "react-qr-code";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import App from "./App";
+import UniqueCode from "./UniqueCode";
 
-function App() {
+function MainRouter() {
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>QR Code</h1>
-      <QRCode value={window.location.origin + "/unique-code"} />
-      <p>Scan the QR code to get a unique code.</p>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={App} />
+        <Route path="/unique-code" component={UniqueCode} />
+      </Switch>
+    </Router>
   );
 }
 
-export default App;
+export default MainRouter;
