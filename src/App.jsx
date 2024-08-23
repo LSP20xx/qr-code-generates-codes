@@ -1,16 +1,16 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import App from "./App";
+import Home from "./Home";
 import UniqueCode from "./UniqueCode";
 
-function MainRouter() {
+function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={App} />
+        <Route exact path="/" component={Home} />
         <Route path="/unique-code" component={UniqueCode} />
       </Switch>
     </Router>
   );
 }
 
-export default MainRouter;
+export default App;
