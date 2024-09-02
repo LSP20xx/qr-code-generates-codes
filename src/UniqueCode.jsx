@@ -1,38 +1,34 @@
-import { useState, useEffect, useCallback } from "react";
-import emailjs from "emailjs-com";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FaDownload } from "react-icons/fa";
 import jsPDF from "jspdf";
 import "./UniqueCode.css";
+import {
+  generateUniqueCode,
+  saveUniqueCode,
+} from "./redux/slices/uniqueCodeSlice";
+import { sendEmail } from "./redux/slices/emailSlice";
 
 function UniqueCode() {
-  const [uniqueCode, setUniqueCode] = useState(() => {
-    const savedCode = localStorage.getItem("uniqueCode");
-    return savedCode || "";
-  });
-
+  const dispatch = useDispatch();
+  const uniqueCode = useSelector((state) => state.uniqueCode.code);
+  const emailStatus = useSelector((state) => state.email.status);
   const [email, setEmail] = useState("");
+
+  const institutionId = "66cd96c1562524452738cd6";
 
   useEffect(() => {
     if (!uniqueCode) {
-      generateUniqueCode();
+      dispatch(generateUniqueCode());
+    } else {
+      // Si ya existe un código, guárdalo en la base de datos si no está guardado
+      dispatch(saveUniqueCode({ institutionId, uniqueCode }));
+      // Descarga el código automáticamente cuando se genera
+      downloadCode();
     }
-  }, [uniqueCode]);
+  }, [dispatch, uniqueCode, institutionId]);
 
-  const generateUniqueCode = () => {
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numbers = "0123456789";
-    let result = "";
-    for (let i = 0; i < 3; i++) {
-      result += letters.charAt(Math.floor(Math.random() * letters.length));
-    }
-    for (let i = 0; i < 2; i++) {
-      result += numbers.charAt(Math.floor(Math.random() * numbers.length));
-    }
-    setUniqueCode(result);
-    localStorage.setItem("uniqueCode", result); // Almacena el código en local storage
-  };
-
-  const downloadCode = useCallback(() => {
+  const downloadCode = () => {
     const doc = new jsPDF();
 
     doc.setFont("helvetica", "bold");
@@ -42,35 +38,12 @@ function UniqueCode() {
     doc.text(uniqueCode, 105, 160, { align: "center" });
 
     doc.save("eloheh_unique_code.pdf");
-  }, [uniqueCode]);
+  };
 
-  useEffect(() => {
-    if (uniqueCode) {
-      downloadCode();
+  const handleSendEmail = () => {
+    if (email) {
+      dispatch(sendEmail({ uniqueCode, email }));
     }
-  }, [uniqueCode, downloadCode]);
-
-  const sendEmail = () => {
-    emailjs
-      .send(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
-        {
-          code: uniqueCode,
-          to_email: email,
-        },
-        "YOUR_USER_ID"
-      )
-      .then(
-        (response) => {
-          console.log(response);
-          alert("Email sent successfully!");
-        },
-        (error) => {
-          console.log(error);
-          alert("Failed to send email. Please try again.");
-        }
-      );
   };
 
   return (
@@ -84,13 +57,16 @@ function UniqueCode() {
         <input
           type="email"
           placeholder="Enter email"
+          className="email-input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="email-input"
         />
-        <button onClick={sendEmail} className="send-button">
+        <button onClick={handleSendEmail} className="send-button">
           Send Code to Email
         </button>
+        {emailStatus === "loading" && <p>Sending email...</p>}
+        {emailStatus === "succeeded" && <p>Email sent successfully!</p>}
+        {emailStatus === "failed" && <p>Failed to send email.</p>}
       </div>
     </div>
   );
