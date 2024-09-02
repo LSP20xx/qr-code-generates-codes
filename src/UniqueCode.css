@@ -7,21 +7,17 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #eaf4e6;
-  /* Verde claro */
 }
 
 .container {
   text-align: center;
   width: 90%;
   max-width: 400px;
-
-  /* Ajusta esto según tus necesidades */
 }
 
 h1 {
   color: #333;
   margin-left: 4%;
-  /* Negro */
 }
 
 .code {
@@ -29,7 +25,6 @@ h1 {
   font-weight: bold;
   margin: 20px 0;
   color: #333;
-  /* Negro */
 }
 
 .download-icon {
@@ -62,7 +57,6 @@ h1 {
   border: 1px solid #ccc;
   border-radius: 4px;
   color: #333;
-  /* Negro */
 }
 
 .send-button {
@@ -72,7 +66,6 @@ h1 {
   font-size: 16px;
   background-color: #1b5e20;
   font-weight: 700;
-  /* Verde irlandés */
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -82,5 +75,4 @@ h1 {
 
 .send-button:hover {
   background-color: #004d40;
-  /* Verde más oscuro */
 }

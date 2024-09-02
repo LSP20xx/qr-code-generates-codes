@@ -7,18 +7,15 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #EAF4E6;
-  /* Verde claro */
 }
 
 h1 {
   color: #333;
-  /* Negro */
 }
 
 button {
   cursor: pointer;
   background-color: #1B5E20;
-  /* Verde irlandés */
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -27,7 +24,6 @@ button {
 
 button:hover {
   background-color: #004d40;
-  /* Verde más oscuro */
 }
 
 input {

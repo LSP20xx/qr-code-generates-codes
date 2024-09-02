@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api";
 
-// Obtener el código único del localStorage si existe
 const initialCode = localStorage.getItem("uniqueCode") || "";
 
 export const saveUniqueCode = createAsyncThunk(

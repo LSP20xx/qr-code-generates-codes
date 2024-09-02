@@ -21,9 +21,7 @@ function UniqueCode() {
     if (!uniqueCode) {
       dispatch(generateUniqueCode());
     } else {
-      // Si ya existe un código, guárdalo en la base de datos si no está guardado
       dispatch(saveUniqueCode({ institutionId, uniqueCode }));
-      // Descarga el código automáticamente cuando se genera
       downloadCode();
     }
   }, [dispatch, uniqueCode, institutionId]);
